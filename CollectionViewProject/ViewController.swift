@@ -12,11 +12,12 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-let images = ["dog", "kame", "ahiru", "kappa"]
+    let images = ["dog", "kame", "ahiru", "kappa"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
 
 
@@ -39,10 +40,35 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource {
         let imageView = cell.contentView.viewWithTag(1) as! UIImageView
         
                imageView.image = UIImage(named: images[indexPath.row])
+        
+        // セルの中のLabelをタグ番号で取得&文字の設定
+        let label = cell.contentView.viewWithTag(2) as! UILabel
+        
+        label.text = "Hello World"
+        
         // 出来上がったセルを返す
         return cell
     }
     
-   
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        print("クリックされたよ")
+        
+    }
     
+}
+
+// コレクションビューのデザインを調整するための拡張
+extension ViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        // 画像の幅を取得
+        let screenSiza = self.view.bounds.width
+        
+        // 画面の幅の半分を計算
+        let cellSize = screenSiza / 2 - 5
+        
+        return CGSize(width: cellSize, height: cellSize)
+    }
 }
